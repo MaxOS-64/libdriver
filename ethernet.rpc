@@ -6,4 +6,6 @@ namespace LibDriver::generic;
 
 service class Ethernet driver_{id} {
     rpc send;
+
+    event on_data_received(bytes data);
 }

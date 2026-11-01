@@ -10,6 +10,7 @@
 
 using namespace LibDriver;
 using namespace LibDriver::generic;
+using namespace MaxOS::common;
 
 Ethernet::Ethernet() = default;
 Ethernet::~Ethernet() = default;
@@ -27,8 +28,7 @@ uint64_t Ethernet::get_mac_address() {
  * @brief send data to the network via the driver backend
  *
  * @param buffer  The buffer to send
- * @param size The size of the buffer
  */
-void Ethernet::send(uint8_t* buffer, uint32_t size) {
+void Ethernet::send(byte_span_t buffer) {
 
 }

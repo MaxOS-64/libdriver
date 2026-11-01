@@ -13,6 +13,7 @@
 
 #include <libdriver/driver.h>
 
+
 namespace LibDriver::generic {
 
 	/**
@@ -27,7 +28,7 @@ namespace LibDriver::generic {
 
             virtual uint64_t get_mac_address();
 
-			virtual void send(uint8_t* buffer, uint32_t size);
+	        virtual void send(MaxOS::common::byte_span_t data);
 	};
 
 }

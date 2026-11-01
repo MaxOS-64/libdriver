@@ -10,6 +10,8 @@
 
 #include <libdriver/generic/disk.h>
 
+#include "libcommon/macros.h"
+
 using namespace LibDriver::generic;
 using namespace MaxOS;
 using namespace MaxOS::common;
@@ -17,6 +19,14 @@ using namespace MaxOS::common;
 Disk::Disk() = default;
 
 Disk::~Disk() = default;
+
+
+/**
+ * @brief Read one whole sector by value. The ATA driver (which overrides read) answers the RPC through this.
+ */
+void Disk::read_sector(uint32_t sector, byte_span_t data) {
+    read(sector, data.data, 512);
+}
 
 /**
  * @brief read data from the disk into a buffer (max capacity 512 bytes)
@@ -49,9 +59,16 @@ void Disk::read(uint32_t sector, buffer_t* data_buffer, size_t amount) {
  */
 void Disk::read(uint32_t sector, uint8_t* data_buffer, size_t amount) {
 
-    disk_sector_t result = read_sector(sector);
-    memcpy(data_buffer, result.data, amount > 512 ? 512 : amount);
+    // Handled by the disk driver
+    NOT_IMPLEMENTED;
 
+}
+
+
+int Disk::write_sector(uint32_t sector, byte_span_t data) {
+
+    write(sector, data.data, 512);
+    return 0;
 }
 
 /**
@@ -84,27 +101,11 @@ void Disk::write(uint32_t sector, buffer_t* data, size_t amount) {
  */
 void Disk::write(uint32_t sector, uint8_t* data, size_t count) {
 
-    disk_sector_t out = {};
-    memcpy(out.data, data, count > 512 ? 512 : count);
-    write_sector(sector, out);
+    // Handled by specific disk drivers
+    NOT_IMPLEMENTED;
 
 }
 
-/**
- * @brief Read one whole sector by value. The ATA driver (which overrides read) answers the RPC through this.
- */
-disk_sector_t Disk::read_sector(uint32_t sector) {
-
-    disk_sector_t result = {};
-    read(sector, result.data, 512);
-    return result;
-}
-
-int Disk::write_sector(uint32_t sector, disk_sector_t data) {
-
-    write(sector, data.data, 512);
-    return 0;
-}
 
 /**
  * @brief Flush the disk cache
